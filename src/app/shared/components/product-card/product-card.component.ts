@@ -1,8 +1,9 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, OnInit, OnDestroy } from '@angular/core';
 import { Product } from '../../../core/models/products.interface';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-card',
@@ -11,7 +12,7 @@ import { CurrencyPipe, DecimalPipe } from '@angular/common';
   styleUrl: './product-card.component.css',
   standalone: true,
 })
-export class ProductCardComponent {
+export class ProductCardComponent implements OnInit, OnDestroy {
   @Input() product!: Product;
   @Input() showButtonAlways: boolean = false;
   @Input() isInWishlist: boolean = false;
@@ -21,6 +22,21 @@ export class ProductCardComponent {
   
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private subscription = new Subscription();
+
+  isAuthenticated: boolean = false;
+
+  ngOnInit(): void {
+    this.subscription.add(
+      this.authService.isAuthenticated$.subscribe(isAuth => {
+        this.isAuthenticated = isAuth;
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   onHeartClick(event: Event) {
     event.preventDefault();
@@ -43,8 +59,6 @@ export class ProductCardComponent {
       return;
     }
     
-    console.log('Adding product to cart:', this.product.id);
-    console.log('Current isInCart state:', this.isInCart);
     this.addToCart.emit(this.product.id);
   }
 }

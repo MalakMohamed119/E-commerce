@@ -1,50 +1,38 @@
-<div class="card rounded py-1 px-1 shadow-lg flex flex-col overflow-hidden group/card transition-all duration-300 hover:-translate-y-0 relative">
-  <div [routerLink]="['/details', product.id, product.slug]" class="cursor-pointer">
-    @if (product.imageCover) {
-      <img [src]="product.imageCover" [alt]="product.title" class="w-full h-49 mb-4 rounded">
-    } @else {
-      <div class="w-full h-49 mb-4 rounded bg-gray-200 flex items-center justify-center">
-        <i class="fas fa-image text-gray-400 text-4xl"></i>
-      </div>
-    }
-    
-    @if (product.category.name) {
-      <h3 class="text-sm text-gray-600">{{ product.category.name }}</h3>
-    }
-    
-    <h4 class="line-clamp-1 font-medium text-gray-800">{{ product.title }}</h4>
+<div class="card p-4 border border-gray-200">
+  <a [routerLink]="['/details', product.id, product.slug]" class="block">
+    <div class="image-wrapper">
+      <img class="product-img" [src]="product.imageCover || (product.images && product.images[0])" [alt]="product.title">
+    </div>
+    <h3 class="text-base font-semibold text-gray-800 line-clamp-2 mt-3">{{ product.title }}</h3>
+    <div class="flex items-center justify-between mt-2">
+      <span class="price text-gray-900 text-lg">{{ product.price | currency:'EGP' }}</span>
+      <span class="text-sm text-gray-500" *ngIf="product.priceAfterDiscount && product.priceAfterDiscount < product.price">Sale</span>
+    </div>
+  </a>
+  
+  <div class="flex items-center justify-between w-full px-2 mt-2">
+    <span class="flex items-center text-sm text-gray-600">
+      <i class="fas fa-star text-yellow-400 mr-1"></i>
+      {{ product.ratingsAverage | number:'1.1-1' }}
+    </span>
+  </div>
 
-    <div class="flex items-center justify-between mt-auto mb-4">
-      <span class="text-lg font-bold text-gray-900">{{ product.price | currency:'USD':'symbol':'1.0-0' }}</span>
-    </div>
-    
-    <div class="flex items-center justify-between w-full px-2">
-      <span class="flex items-center text-sm text-gray-600">
-        <i class="fas fa-star text-yellow-400 mr-1"></i>
-        {{ product.ratingsAverage | number:'1.1-1' }}
-      </span>
-      
-      <span class="flex-1"></span>
-      
-      <div class="flex items-center gap-2 mb-4">
-        <button 
-          (click)="onCartClick($event)"
-          class="flex items-center transition-colors duration-200"
-          [class.text-[#174B78]]="isInCart"
-          [class.text-gray-400]="!isInCart"
-          [class.hover\:text-blue-700]="!isInCart"
-          [title]="isInCart ? 'Remove from cart' : 'Add to cart'">
-          <i [class]="isInCart ? 'fas fa-shopping-cart text-lg' : 'fas fa-shopping-cart text-lg'"></i>
-        </button>
-        <button 
-          (click)="onHeartClick($event)"
-          class="flex items-center transition-colors duration-200"
-          [class.text-red-500]="isInWishlist"
-          [class.text-gray-400]="!isInWishlist"
-          [class.hover\:text-red-700]="!isInWishlist">
-          <i [class]="isInWishlist ? 'fas fa-heart text-lg' : 'far fa-heart text-lg'"></i>
-        </button>
-      </div>
-    </div>
+  <div class="actions px-2 pb-2">
+    <button 
+      (click)="onHeartClick($event)"
+      class="icon-btn"
+      [class.text-red-500]="isAuthenticated && isInWishlist"
+      [class.text-gray-400]="!isAuthenticated || !isInWishlist"
+      [title]="isAuthenticated ? (isInWishlist ? 'Remove from wishlist' : 'Add to wishlist') : 'Login to use wishlist'">
+      <i [class]="isAuthenticated && isInWishlist ? 'fas fa-heart' : 'far fa-heart'"></i>
+    </button>
+    <button 
+      (click)="onCartClick($event)"
+      class="icon-btn"
+      [class.text-[#174B78]]="isAuthenticated && isInCart"
+      [class.text-gray-400]="!isAuthenticated || !isInCart"
+      [title]="isAuthenticated ? (isInCart ? 'Remove from cart' : 'Add to cart') : 'Login to add to cart'">
+      <i class="fas fa-shopping-cart"></i>
+    </button>
   </div>
 </div>

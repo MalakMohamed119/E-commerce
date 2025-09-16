@@ -5,8 +5,9 @@
   overflow: hidden;
   transition: all 0.3s ease;
   position: relative;
-  height: fit-content;
-  min-height: 280px;
+  height: 360px;
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
@@ -14,9 +15,47 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
-/* Image Container */
-.card img {
-  border-radius: 8px;
+/* Equal image wrapper */
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Overlay icons pinned */
+.overlay-icons {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9999px;
+  background: #f3f4f6;
+}
+
+.icon-btn:hover {
+  background: #e5e7eb;
+}
+
+.icon-btn i {
+  font-size: 16px;
 }
 
 /* Text Truncation */
@@ -115,6 +154,24 @@ button:active {
   text-decoration: line-through;
   color: #9ca3af;
   font-size: 0.875rem;
+}
+
+/* Neutral price color */
+.price {
+  color: #111827;
+}
+
+/* Ensure consistent spacing */
+.card h3 {
+  min-height: 2.6rem; /* reserve two lines height */
+}
+
+/* Bottom actions */
+.actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
 }
 
 /* Rating Stars */

@@ -21,13 +21,20 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   cartCount: number = 0;
   private subscription = new Subscription();
 
+  // Deprecated: kept for compatibility with template until fully removed
   @Input() isLogin: boolean = false;
+
+  // New explicit flag (true when authenticated)
+  isAuthenticated: boolean = false;
 
   ngOnInit(): void {
     // Subscribe to authentication state
     this.subscription.add(
       this.authService.isAuthenticated$.subscribe(isAuth => {
-        this.isLogin = !isAuth; // Note: isLogin seems to be inverted in the template
+        this.isAuthenticated = isAuth;
+        // Maintain backward-compat value but avoid confusion
+        this.isLogin = !isAuth;
+
         if (isAuth) {
           // User is logged in, subscribe to counts
           this.subscribeToServices();
