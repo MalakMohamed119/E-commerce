@@ -1,6 +1,32 @@
-# ECommerce
+# E-Commerce Application
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
+
+## Deployment to Vercel
+
+This application is configured for deployment to Vercel. Follow these steps to deploy:
+
+1. **Install Vercel CLI** (if not already installed):
+   ```bash
+   npm install -g vercel
+   ```
+
+2. **Build the application**:
+   ```bash
+   ng build --configuration production
+   ```
+
+3. **Deploy to Vercel**:
+   ```bash
+   vercel
+   ```
+   - Follow the prompts to log in or create a Vercel account
+   - Choose the default options when prompted
+
+4. **For subsequent deployments**, you can use:
+   ```bash
+   vercel --prod
+   ```
 
 ## Development server
 
