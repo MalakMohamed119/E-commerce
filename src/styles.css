@@ -1,0 +1,68 @@
+@import "tailwindcss";
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+@layer components {
+  .btn {
+    background-color: #1a5b89;
+    border: 1px solid #2563eb;
+    color: white;
+    padding: 4px 12px;
+    margin-top: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #174B78;
+  }
+  
+  .btn:disabled {
+    background-color: #6b7280;
+    cursor: not-allowed;
+  }
+  .main-input {
+    @apply block rounded-lg px-4 py-3 w-full text-sm text-gray-900 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: none;
+  }
+  .main-lable{
+    @apply absolute left-4 -top-2.5 bg-white px-2 text-sm text-gray-600 transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-placeholder-shown:left-4 peer-focus:-top-2.5 peer-focus:left-4 peer-focus:text-sm peer-focus:text-blue-600
+}
+}
+:root {
+    --main-color: #174B70;
+    --secondary-color: #2563eb;
+    --light-color: #f8fafc;
+    --shadow: rgba(145, 158, 171, 0.2) 0px 2px 4px -1px,
+      rgba(145, 158, 171, 0.14) 0px 4px 5px 0px,
+      rgba(145, 158, 171, 0.12) 0px 1px 10px 0px;
+    --font-family: "Encode Sans Expanded", sans-serif;
+    --rating-color: #ffc908;
+  }
+body{
+    font-family: "Titillium Web", sans-serif;
+
+}
+.btn-main {
+    background-color: var(--main-color);
+    padding: 7px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.5s;
+  }
+  .btn-main:disabled {
+    cursor: not-allowed;
+    background-color: #ccc;
+  }
+  .btn-main:disabled:hover {
+    background-color: #ccc;
+  }
+  .btn-main:hover {
+    background-color: #174B78;
+  }

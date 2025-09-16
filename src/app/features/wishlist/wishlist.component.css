@@ -1,0 +1,58 @@
+/* Wishlist Page Styles */
+.container {
+  max-width: 1200px;
+}
+
+/* Empty State Styles */
+.empty-state {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove Button Styles */
+.remove-btn {
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+.remove-btn:hover {
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  transform: scale(1.05);
+}
+
+/* Clear All Button */
+.clear-btn {
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.clear-btn:hover {
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Product Card Container */
+.wishlist-item {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.wishlist-item:hover {
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+}

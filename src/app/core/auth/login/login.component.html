@@ -1,0 +1,89 @@
+<section class="min-h-screen bg-white flex items-center justify-center py-12 px-8 sm:px-6 lg:px-14">
+    <div class="max-w-md w-full space-y-4">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold text-gray-600 mb-1">Login to Your Account</h1>
+            <p class="text-gray-500">Welcome back to EvoShop</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+                <!-- Email -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Email Address</label>
+                    <input formControlName="email" type="email" 
+                        style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" 
+                        placeholder="Enter your email" />
+                    @if(loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+                        <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
+                            @if(loginForm.get('email')?.errors?.['required']) { <p>This field is required</p> }
+                            @if(loginForm.get('email')?.errors?.['email']) { <p>Please enter a valid email</p> }
+                        </div>
+                    }
+                </div>
+
+                <!-- Password -->
+                <div style="margin-bottom: 1.5rem;">
+                    <div class="flex justify-between items-center">
+                        <label style="font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Password</label>
+                        <a routerLink="/forgot-password" class="text-sm text-[#1a5b89] hover:text-[#174B78] font-medium">
+                            Forgot Password?
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <input formControlName="password" 
+                            [type]="showPassword ? 'text' : 'password'" 
+                            class="w-full pr-10 py-3 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Enter your password" />
+                        <button type="button" 
+                            (click)="togglePasswordVisibility(); $event.preventDefault()" 
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+                            <i [class]="showPassword ? 'far fa-eye-slash' : 'far fa-eye'"></i>
+                        </button>
+                    </div>
+                    @if(loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                        <div class="text-red-500 text-sm mt-1">
+                            @if(loginForm.get('password')?.errors?.['required']) { <p>This field is required</p> }
+                            @if(loginForm.get('password')?.errors?.['pattern']) { 
+                                <p>Password must contain at least 6 characters with uppercase, lowercase, number and special character</p> 
+                            }
+                        </div>
+                    }
+                </div>
+
+                <!-- Submit Button -->
+                <button [disabled]="isLoading" type="submit" 
+                    class="w-full bg-[#1a5b89] hover:bg-[#174B78] text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-300 ease-in-out">
+                    @if(isLoading) {
+                        <i class="fas fa-spinner animate-spin mr-2"></i>
+                    } @else {
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                    }
+                    Sign In
+                </button>
+
+                @if(errorMessage) {
+                    <p class="text-red-500 text-sm mt-3 text-center">
+                        <i class="fas fa-exclamation-circle mr-1"></i> {{errorMessage}}
+                    </p>
+                }
+
+                @if(success) {
+                    <p class="text-green-600 text-sm mt-3 text-center">
+                        <i class="fas fa-check-circle mr-1"></i> Login successful
+                    </p>
+                }
+
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600 text-sm">
+                        Don't have an account?
+                        <a routerLink="/register" 
+                           class="ml-1 text-[#1a5b89] hover:text-[#174B78] font-semibold">
+                            Create Account
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,91 @@
+<div class="min-h-screen bg-white">
+  <!-- Product Details Section -->
+  <div class="py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="flex flex-col lg:flex-row">
+          <!-- Product Image (Left Side) -->
+          <div class="lg:w-2/5 p-6 flex items-center justify-center bg-gray-50">
+            <div class="max-w-md w-full">
+              <img 
+                [src]="productDetails.imageCover" 
+                [alt]="productDetails.title"
+                class="w-full h-auto max-h-96 object-contain"
+              />
+            </div>
+          </div>
+
+          <!-- Product Info (Right Side) -->
+          <div class="lg:max-w-6/12 p-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ productDetails.title }}</h1>
+            
+            <!-- Rating and Category -->
+            <div class="flex items-center mb-6">
+              <div class="flex items-center">
+                <div class="flex items-center bg-yellow-50 px-3 py-1 rounded-full">
+                  <i class="fas fa-star text-yellow-400 mr-1"></i>
+                  <span class="text-gray-700 font-medium">{{ productDetails.ratingsAverage || '0.0' }}</span>
+                </div>
+                <span class="mx-3 text-gray-300">|</span>
+                <span class="text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                  {{ productDetails.category ? productDetails.category.name : 'Uncategorized' }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Price -->
+            <div class="mb-6">
+              <span class="text-4xl font-bold text-blue-900">$ {{ productDetails.price }}</span>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-8">
+              <h3 class="text-lg font-medium text-gray-900 mb-3">Description</h3>
+              <p class="text-gray-600 leading-relaxed text-justify">
+                {{ productDetails.description || 'No description available.' }}
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center space-x-4 mt-10">
+              <button 
+                (click)="addToCart()"
+                class="flex-1 btn text-white py-4 px-6 rounded-lg font-medium transition duration-300 text-lg"
+              >
+                Add to Cart
+              </button>
+              <button 
+                (click)="toggleWishlist()"
+                class=" flex items-center justify-center p-4 rounded-full border-2 border-gray-200 hover:bg-gray-50 transition duration-200"
+                [class.text-red-500]="isInWishlist"
+                [class.text-gray-400]="!isInWishlist"
+                [class.border-red-200]="isInWishlist"
+                title="Add to wishlist"
+              >
+                <i class="fas fa-heart text-xl"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8">You May Also Like</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+        @for (product of recommendedProducts.slice(0, 6); track product.id) {
+          <app-product-card 
+            [product]="product"
+            [isInWishlist]="isInWishlistCheck(product.id)"
+            [isInCart]="isInCartCheck(product.id)"
+            (toggleWishlist)="onToggleWishlist($event)"
+            (addToCart)="onAddToCart($event)">
+          </app-product-card>
+        }
+      </div>
+    </div>
+  </section>
+  
+</div>

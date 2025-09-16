@@ -1,0 +1,174 @@
+/* Product Card Styles */
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+  height: fit-content;
+  min-height: 280px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Image Container */
+.card img {
+  border-radius: 8px;
+}
+
+/* Text Truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  max-height: 2.8em;
+}
+
+/* Button Animations */
+button {
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Icon Buttons Container */
+.icon-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Cart Icon Button */
+.cart-icon-btn {
+  color: #3b82f6;
+  transition: all 0.2s ease;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-icon-btn:hover {
+  color: #1d4ed8;
+  background: rgba(59, 130, 246, 0.1);
+  transform: scale(1.1);
+}
+
+/* Wishlist Button */
+.wishlist-btn {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.wishlist-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+}
+
+.add-to-cart-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* View Button */
+.view-btn {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.view-btn:hover {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+/* Price Styling */
+.price {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: #059669;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+/* Rating Stars */
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Category Badge */
+.category {
+  color: #6b7280;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* Product Title */
+.product-title {
+  color: #1f2937;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 8px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 16px;
+  }
+  
+  button {
+    font-size: 0.875rem;
+    padding: 8px 12px;
+  }
+  
+  .product-title {
+    font-size: 0.875rem;
+  }
+}
+
+/* Loading Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.loading {
+  animation: shimmer 1.5s ease-in-out infinite;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 100%;
+}

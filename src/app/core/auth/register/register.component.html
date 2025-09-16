@@ -1,0 +1,114 @@
+<section class="min-h-screen bg-white flex items-center justify-center py-12 px-8 sm:px-6 lg:px-14">
+    <div class="max-w-md w-full space-y-4">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold text-gray-600 mb-1">Create Account</h1>
+            <p class="text-gray-500">Join us and start shopping</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <form [formGroup]="registerForm" (ngSubmit)="submitForm()">
+                <!-- Name -->
+                <div style="margin-bottom: 1rem;">
+                  <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Full Name</label>
+                  <input formControlName="name" type="text" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" />
+                  @if(registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+                    <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
+                      @if(registerForm.get('name')?.errors?.['required']) { <p>This field is required</p> }
+                      @if(registerForm.get('name')?.errors?.['minlength']) { <p>Minimum length is 2 characters</p> }
+                      @if(registerForm.get('name')?.errors?.['maxlength']) { <p>Maximum length is 20 characters</p> }
+                    </div>
+                  }
+                </div>
+
+                <!-- Email -->
+                <div style="margin-bottom: 1rem;">
+                  <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Email Address</label>
+                  <input formControlName="email" type="email" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" />
+                  @if(registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+                    <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
+                      @if(registerForm.get('email')?.errors?.['required']) { <p>This field is required</p> }
+                      @if(registerForm.get('email')?.errors?.['email']) { <p>Please enter a valid email</p> }
+                    </div>
+                  }
+                </div>
+
+                <!-- Phone -->
+                <div style="margin-bottom: 1rem;">
+                  <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Phone Number</label>
+                  <input formControlName="phone" type="tel" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" />
+                  @if(registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched) {
+                    <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
+                      @if(registerForm.get('phone')?.errors?.['required']) { <p>This field is required</p> }
+                      @if(registerForm.get('phone')?.errors?.['pattern']) { <p>Please enter a valid Egyptian phone number (01xxxxxxxxx)</p> }
+                    </div>
+                  }
+                </div>
+
+                <!-- Password -->
+                <div style="margin-bottom: 1rem;">
+                  <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Password</label>
+                  <div style="position: relative;">
+                    <input formControlName="password" [type]="showPassword ? 'text' : 'password'" style="width: 100%; padding: 0.75rem 1rem; padding-right: 3rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" />
+                    <button type="button" (click)="togglePasswordVisibility()" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6b7280; cursor: pointer;">
+                      <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                    </button>
+                  </div>
+                  @if(registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+                    <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
+                      @if(registerForm.get('password')?.errors?.['required']) { <p>This field is required</p> }
+                      @if(registerForm.get('password')?.errors?.['pattern']) { <p>Password must contain at least 6 characters with uppercase, lowercase, number and special character</p> }
+                    </div>
+                  }
+                </div>
+
+                <!-- Confirm Password -->
+                <div style="margin-bottom: 1rem;">
+                  <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Confirm Password</label>
+                  <div style="position: relative;">
+                    <input formControlName="rePassword" [type]="showRePassword ? 'text' : 'password'" style="width: 100%; padding: 0.75rem 1rem; padding-right: 3rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" />
+                    <button type="button" (click)="toggleRePasswordVisibility()" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6b7280; cursor: pointer;">
+                      <i [class]="showRePassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                    </button>
+                  </div>
+                  @if(registerForm.get('rePassword')?.invalid && registerForm.get('rePassword')?.touched) {
+                    <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
+                      @if(registerForm.get('rePassword')?.errors?.['required']) { <p>This field is required</p> }
+                    </div>
+                  }
+                </div>
+                
+                <!-- Custom validation for password mismatch -->
+                @if(registerForm.getError('mismatch') && registerForm.get('rePassword')?.touched){
+                <div class="text-red-500 text-sm mt-1">
+                  <p>Passwords do not match</p>
+                </div>
+                }
+
+
+                <button [disabled]="isLoading" type="submit" class="btn w-full py-3">
+                    Create Account
+                    @if(isLoading){
+                    <span> <i class="fas fa-spinner animate-spin"></i></span>
+
+                    }
+                </button>
+                @if(msgERror){
+                <p class="text-red-500 text-sm mt-1 text-center">{{msgERror}}</p>
+                }
+                @if(success){
+                    <p class="text-green-800 text-sm mt-1 text-center">Account created successfully </p>
+                    }
+                <div class="text-center">
+                    <p class="text-gray-600">
+                        Already have an account?
+                        <a routerLink="/login"
+                            class="text-[#1a5b89] hover:text-[#174B78] font-semibold transition-colors duration-300">
+                            login
+                        </a>
+                    </p>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</section>

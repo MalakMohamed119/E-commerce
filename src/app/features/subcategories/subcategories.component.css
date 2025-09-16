@@ -1,0 +1,8 @@
+/* Subcategories component styles */
+.subcategory-card {
+  transition: all 0.3s ease;
+}
+
+.subcategory-card:hover {
+  transform: translateY(-2px);
+}

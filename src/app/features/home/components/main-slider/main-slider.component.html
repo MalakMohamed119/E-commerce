@@ -1,0 +1,13 @@
+<section class="bg-gray-200 ">
+  <div class=" mx-auto ">
+    <owl-carousel-o [options]="mainOption">
+      <ng-container *ngFor="let slide of slides">
+        <ng-template carouselSlide [id]="'slide-' + slide.id">
+          <div class="relative h-64 md:h-96 w-full">
+            <img [src]="slide.img" [alt]="'Slide ' + slide.id" class="w-full h-full object-cover ">
+          </div>
+        </ng-template>
+      </ng-container>
+    </owl-carousel-o>
+  </div>
+</section>

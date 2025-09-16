@@ -1,0 +1,36 @@
+<section class="bg-gray-100 min-h-screen py-12 px-12">
+  <div class="container mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-700">My Wishlist</h1>
+      @if (wishlistItems.length > 0) {
+        <button 
+          (click)="clearWishlist()" 
+          class="bg-red-700 hover:bg-red-900 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+          Clear All
+        </button>
+      }
+    </div>
+
+    @if (wishlistItems.length === 0) {
+      <div class="text-center py-20">
+        <i class="fas fa-heart text-6xl text-red-500 mb-4"></i>
+        <h2 class="text-2xl text-gray-600 mb-4">Your wishlist is empty</h2>
+        <p class="text-gray-500 mb-8">Add some products to your wishlist to see them here</p>
+        <a routerLink="/" class="btn text-white px-6 py-3 rounded-lg transition-colors duration-300">Go Home </a>
+      </div>
+    } @else {
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        @for (product of wishlistItems; track product.id) {
+          <app-product-card 
+            [product]="product" 
+            [showButtonAlways]="true"
+            [isInWishlist]="true"
+            [isInCart]="isInCart(product.id)"
+            (toggleWishlist)="removeFromWishlist($event)"
+            (addToCart)="onAddToCart($event)">
+          </app-product-card>
+        }
+      </div>
+    }
+  </div>
+</section>

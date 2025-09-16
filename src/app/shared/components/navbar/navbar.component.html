@@ -1,0 +1,165 @@
+<nav class="py-4 text-xl" style="background-color: #174B70; border-color: #174B70;">
+  <div class="max-w-screen-2xl flex items-center justify-between mx-auto py-2 px-4">
+    <!-- Logo -->
+    <div class="flex-shrink-0">
+      <a routerLink="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <span class="text-4xl text-gray-300 font-bold">EvoShop</span>
+        <i class="fas fa-bolt-lightning  text-white text-3xl"></i>
+
+      </a>
+    </div>
+
+    <!-- App links (desktop) -->
+    @if (!isLogin) {
+      <ul class="hidden md:flex flex-row space-x-6 capitalize font-medium">
+        <li><a routerLink="/home" class="text-white hover:text-gray-400 transition-colors duration-300">home</a></li>
+        <li><a routerLink="/products" class="text-white hover:text-gray-400 transition-colors duration-300">products</a></li>
+        <li><a routerLink="/categories" class="text-white hover:text-gray-400 transition-colors duration-300">categories</a></li>
+        <li><a routerLink="/brands" class="text-white hover:text-gray-400 transition-colors duration-300">brands</a></li>
+        <li>
+          <a routerLink="/wishlist" 
+             class="flex mt-1 gap-1 transition-colors duration-200 relative">
+            <i class="far fa-heart text-lg text-red-600"></i>
+            @if (wishlistCount > 0 && !isLogin) {
+              <span class="absolute -top-3 -right-2 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                {{wishlistCount}}
+              </span>
+            }
+          </a>
+        </li>
+        <li>
+          <a routerLink="/cart" 
+             class="flex mt-1 gap-1 transition-colors duration-200 relative">
+            <i class="fa-solid fa-cart-shopping text-lg text-white hover:text-[#83c0ec] transition-colors duration-300"></i>
+            @if (cartCount > 0 && !isLogin) {
+              <span class="absolute -top-3 -right-2 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                {{cartCount}}
+              </span>
+            }
+          </a>
+        </li>
+        
+
+        
+      </ul>
+    }
+
+    <!-- Right side (desktop) -->
+    <div class="flex-shrink-0">
+      @if (!isLogin) {
+        <ul class="hidden md:flex flex-row space-x-3 capitalize font-medium mr-2">
+          <li>
+            <a routerLink="/profile" class="flex items-center text-white hover:text-gray-400 transition-colors duration-300">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+              </svg>
+            </a>
+          </li>
+          <li><a (click)="signOut()" class="text-white hover:text-gray-400 cursor-pointer transition-colors duration-300">sign out</a></li>
+        </ul>
+      }
+      @if (isLogin) {
+        <ul class="hidden md:flex flex-row space-x-3 capitalize font-medium">
+          <li><a routerLink="/login" class="text-white hover:text-gray-400 transition-colors duration-300">login</a></li>
+          <li><a routerLink="/register" class="text-white hover:text-gray-400 transition-colors duration-300">register</a></li>
+        </ul>
+      }
+    </div>
+
+    <!-- Mobile menu button -->
+    <button data-collapse-toggle="navbar-default" type="button"
+      class="ml-auto inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white rounded-lg md:hidden hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400"
+      aria-controls="navbar-default" aria-expanded="false">
+      <span class="sr-only">Open main menu</span>
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 17 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M1 1h15M1 7h15M1 13h15" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="hidden w-full md:hidden" id="navbar-default">
+    @if (!isLogin) {
+      <ul class="flex flex-col mt-4 space-y-3 font-medium border-b border-gray-300 pb-3 px-4">
+        <!-- Profile Link with Icon -->
+        <li>
+          <a routerLink="/profile" class="flex items-center text-white hover:text-gray-400 transition-colors duration-300 py-2">
+            <i class="fas fa-user-circle text-xl w-6 text-center"></i>
+            <span class="ms-3">My Profile</span>
+          </a>
+        </li>
+        
+        <!-- Cart Link with Icon -->
+        <li>
+          <a routerLink="/cart" class="flex items-center text-white hover:text-gray-400 transition-colors duration-300 py-2 relative">
+            <i class="fas fa-shopping-cart text-xl w-6 text-center"></i>
+            <span class="ms-3">My Cart</span>
+            @if (cartCount > 0) {
+              <span class="absolute right-0 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {{cartCount}}
+              </span>
+            }
+          </a>
+        </li>
+        
+        <!-- Other Menu Items -->
+        <li class="border-t border-gray-600 pt-2 mt-2">
+          <a routerLink="/home" class="flex items-center text-white hover:text-gray-400 transition-colors duration-300 py-2">
+            <i class="fas fa-home text-xl w-6 text-center"></i>
+            <span class="ms-3">Home</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/products" class="flex items-center text-white hover:text-gray-400 transition-colors duration-300 py-2">
+            <i class="fas fa-box text-xl w-6 text-center"></i>
+            <span class="ms-3">Products</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/categories" class="flex items-center text-white hover:text-gray-400 transition-colors duration-300 py-2">
+            <i class="fas fa-tags text-xl w-6 text-center"></i>
+            <span class="ms-3">Categories</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/brands" class="flex items-center text-white hover:text-gray-400 transition-colors duration-300 py-2">
+            <i class="fas fa-copyright text-xl w-6 text-center"></i>
+            <span class="ms-3">Brands</span>
+          </a>
+        </li>
+        <li class="border-t border-gray-600 pt-2 mt-2">
+          <a routerLink="/wishlist" class="flex items-center text-white hover:text-gray-400 transition-colors duration-300 py-2 relative">
+            <i class="far fa-heart text-xl w-6 text-center text-red-400"></i>
+            <span class="ms-3">Wishlist</span>
+            @if (wishlistCount > 0) {
+              <span class="absolute right-0 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {{wishlistCount}}
+              </span>
+            }
+          </a>
+        </li>
+        
+        <!-- Sign Out Button -->
+        <li class="border-t border-gray-600 pt-2 mt-2">
+          <a (click)="signOut()" class="flex items-center text-white hover:text-red-400 cursor-pointer transition-colors duration-300 py-2">
+            <i class="fas fa-sign-out-alt text-xl w-6 text-center"></i>
+            <span class="ms-3">Sign Out</span>
+          </a>
+        </li>
+        
+      </ul>
+    }
+    <!-- Sign out button now appears above with icon -->
+
+    @if (isLogin) {
+      <ul class="flex flex-col mt-3 space-y-2 font-medium">
+        <li><a routerLink="login" class="text-white hover:text-gray-400 ms-2 transition-colors duration-300">login</a></li>
+        <li><a routerLink="register" class="text-white hover:text-gray-400 ms-2 transition-colors duration-300">register</a></li>
+      </ul>
+    }
+
+   
+  </div>
+</nav>
