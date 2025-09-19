@@ -8,11 +8,13 @@ import { FooterComponent } from './shared/components/footer/footer.component';
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, FooterComponent],
   template: `
-    <app-navbar></app-navbar>
-    <main class="min-h-screen">
-      <router-outlet></router-outlet>
-    </main>
-    <app-footer></app-footer>
+    <div class="flex flex-col min-h-screen">
+      <app-navbar></app-navbar>
+      <main class="flex-grow">
+        <router-outlet></router-outlet>
+      </main>
+      <app-footer class="mt-auto"></app-footer>
+    </div>
   `,
   styles: []
 })

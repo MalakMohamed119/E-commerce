@@ -5,15 +5,44 @@
       <div class="bg-white rounded-xl shadow-lg overflow-hidden">
         <div class="flex flex-col lg:flex-row">
           <!-- Product Image (Left Side) -->
-          <div class="lg:w-2/5 p-6 flex items-center justify-center bg-gray-50">
-            <div class="max-w-md w-full">
+          <div class="lg:w-2/5 p-6 flex flex-col items-center bg-gray-50">
+            <!-- Main Product Image -->
+            <div class="w-full max-w-md mb-6 cursor-zoom-in " (click)="openLightbox(productDetails.imageCover)">
               <img 
                 [src]="productDetails.imageCover" 
                 [alt]="productDetails.title"
-                class="w-full h-auto max-h-96 object-contain"
+                class="w-full h-auto max-h-96 object-contain mx-auto"
               />
             </div>
+
+            <!-- Thumbnail Gallery -->
+            <div *ngIf="productDetails.images?.length" class="w-full max-w-md px-4">
+              <div class="flex justify-center gap-4 overflow-x-auto py-2">
+                <div *ngFor="let img of productDetails.images | slice:0:4" 
+                     class="flex-shrink-0 w-14 h-14 cursor-pointer rounded-full overflow-hidden transition-all duration-200  p-0.5"
+                     [class.border-blue-500]="img === productDetails.imageCover"
+                     [class.border-gray-200]="img !== productDetails.imageCover"
+                     (click)="$event.stopPropagation(); productDetails.imageCover = img">
+                  <img [src]="img" 
+                       [alt]="productDetails.title + ' thumbnail'" 
+                       class="w-full h-full object-cover rounded-full hover:opacity-90 transition-opacity">
+                </div>
+              </div>
+            </div>
           </div>
+
+        <!-- Lightbox -->
+<div *ngIf="lightboxOpen" 
+class="fixed inset-0 bg-gradient-to-br from-gray-800/70 via-gray-600/60 to-blue-600/70 z-50 flex items-center justify-center p-4" 
+(click)="closeLightbox()">
+<div class="relative max-w-4xl w-full" (click)="$event.stopPropagation()">
+<button (click)="closeLightbox()" class="absolute -top-10 right-0 text-white hover:text-gray-300">
+ <i class="fas fa-times text-2xl"></i>
+</button>
+<img [src]="lightboxImage" [alt]="'Enlarged ' + productDetails.title" class="max-h-[80vh] w-auto mx-auto rounded-lg shadow-lg">
+</div>
+</div>
+
 
           <!-- Product Info (Right Side) -->
           <div class="lg:max-w-6/12 p-8">

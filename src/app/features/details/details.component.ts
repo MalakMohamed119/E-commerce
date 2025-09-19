@@ -18,42 +18,63 @@ import { CartService } from '../cart/services/cart.service';
   standalone: true,
 })
 export class DetailsComponent implements OnInit, OnDestroy {
+  // Lightbox properties
+  lightboxOpen = false;
+  lightboxImage = '';
 private readonly activatedRoute=inject(ActivatedRoute);
 private readonly detailsService=inject(DetailsService);
 private readonly wishlistService=inject(WishlistService);
 private readonly productsService=inject(ProductsService);
 private readonly cartService=inject(CartService);
 private readonly authService=inject(AuthService);
-private readonly router=inject(Router);
 
-id: string | null = null;
-productDetails: Product = {} as Product;
-recommendedProducts: Product[] = [];
-private subscription: Subscription = new Subscription();
-isInWishlist: boolean = false;
+  id: string | null = null;
+  productDetails: Product = {} as Product;
+  recommendedProducts: Product[] = [];
+  private subscription: Subscription = new Subscription();
+  isInWishlist: boolean = false;
 
-ngOnInit(): void {
-  this.getProductId();
-}
+  // Lightbox methods
+  openLightbox(imageUrl: string): void {
+    this.lightboxImage = imageUrl;
+    this.lightboxOpen = true;
+    document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
+  }
 
-ngOnDestroy(): void {
-  this.subscription.unsubscribe();
-}
+  closeLightbox(): void {
+    this.lightboxOpen = false;
+    document.body.style.overflow = ''; // Re-enable scrolling
+  }
 
-getProductId(): void {
-  this.subscription.add(
-    this.activatedRoute.paramMap.subscribe({
-      next: (urlParam) => {
-        this.id = urlParam.get('id');
-        if (this.id) {
-          this.getDetails();
-        }
-      }
-    })
-  );
-}
+  constructor(private readonly router: Router) {}
 
-getDetails(): void {
+  ngOnInit(): void {
+    this.getProductId();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    // Make sure to re-enable scrolling if component is destroyed while lightbox is open
+    if (this.lightboxOpen) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  getProductId(): void {
+    this.subscription.add(
+      this.activatedRoute.paramMap.subscribe({
+        next: (params) => {
+          this.id = params.get('id');
+          if (this.id) {
+            this.getDetails();
+          }
+        },
+        error: (err) => console.error('Error getting route params:', err)
+      })
+    );
+  }
+
+  getDetails(): void {
   if (this.id) {
     this.subscription.add(
       this.detailsService.getDetails(this.id).subscribe({
@@ -81,12 +102,49 @@ getRecommendedProducts(): void {
   this.subscription.add(
     this.productsService.getAllProducts().subscribe({
       next: (res) => {
-        this.recommendedProducts = res.data
-          .filter(product => 
-            product.category.name === this.productDetails.category.name && 
+        if (!res.data || res.data.length === 0) {
+          this.recommendedProducts = [];
+          return;
+        }
+
+        // First, get products from the same category (excluding current product)
+        const sameCategoryProducts = res.data.filter(
+          product => 
+            product.category?.name === this.productDetails.category?.name && 
             product.id !== this.productDetails.id
-          )
-          .slice(0, 12);
+        );
+
+        // If we have enough products from the same category, use them
+        if (sameCategoryProducts.length >= 12) {
+          this.recommendedProducts = sameCategoryProducts.slice(0, 12);
+          return;
+        }
+
+        // If not enough products in the same category, get some from other categories
+        const otherCategoryProducts = res.data.filter(
+          product => 
+            product.category?.name !== this.productDetails.category?.name &&
+            product.id !== this.productDetails.id
+        );
+
+        // Combine both arrays and take up to 12 products
+        this.recommendedProducts = [
+          ...sameCategoryProducts,
+          ...otherCategoryProducts
+        ].slice(0, 12);
+
+        // If still not enough products, fill with random products (excluding current product)
+        if (this.recommendedProducts.length < 12) {
+          const remaining = 12 - this.recommendedProducts.length;
+          const additionalProducts = res.data
+            .filter(product => 
+              product.id !== this.productDetails.id && 
+              !this.recommendedProducts.some(p => p.id === product.id)
+            )
+            .slice(0, remaining);
+          
+          this.recommendedProducts = [...this.recommendedProducts, ...additionalProducts];
+        }
       },
       error: (err) => {
         console.log('Error loading recommended products:', err);
