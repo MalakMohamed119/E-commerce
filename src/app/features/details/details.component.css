@@ -1,0 +1,8 @@
+.no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE و Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  

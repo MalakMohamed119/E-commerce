@@ -1,6 +1,6 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DetailsService } from './details.service';
 import { WishlistService } from '../../core/services/wishlist.service';
@@ -12,15 +12,24 @@ import { CartService } from '../cart/services/cart.service';
 
 @Component({
   selector: 'app-details',
-  imports: [CommonModule, ProductCardComponent],
+  imports: [CommonModule, ProductCardComponent, RouterLink],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css',
   standalone: true,
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   // Lightbox properties
+  @ViewChild('carousel') carouselRef!: ElementRef<HTMLDivElement>;
+  
   lightboxOpen = false;
   lightboxImage = '';
+  currentSlide = 0;
+  canScrollPrev = false;
+  canScrollNext = true;
+  
+  // Carousel configuration
+  private scrollAmount = 300; // Adjust this value based on your card width + margin
+  private scrollInterval: any;
 private readonly activatedRoute=inject(ActivatedRoute);
 private readonly detailsService=inject(DetailsService);
 private readonly wishlistService=inject(WishlistService);
@@ -52,11 +61,62 @@ private readonly authService=inject(AuthService);
     this.getProductId();
   }
 
+  ngAfterViewInit(): void {
+    this.checkScrollButtons();
+    // Recheck on window resize
+    window.addEventListener('resize', this.checkScrollButtons.bind(this));
+    
+    // Auto-scroll functionality (optional)
+    this.setupAutoScroll();
+  }
+
+  // Carousel Methods
+  scrollCarousel(direction: number): void {
+    const carousel = this.carouselRef.nativeElement;
+    const scrollAmount = this.scrollAmount * direction;
+    
+    carousel.scrollBy({
+      left: scrollAmount,
+      behavior: 'smooth'
+    });
+    
+    // Update button states after scroll
+    setTimeout(() => this.checkScrollButtons(), 300);
+  }
+
+  private checkScrollButtons(): void {
+    if (!this.carouselRef) return;
+    
+    const carousel = this.carouselRef.nativeElement;
+    this.canScrollPrev = carousel.scrollLeft > 0;
+    this.canScrollNext = carousel.scrollLeft < (carousel.scrollWidth - carousel.clientWidth - 1);
+  }
+
+  private setupAutoScroll(): void {
+    // Auto-scroll every 5 seconds (optional)
+    this.scrollInterval = setInterval(() => {
+      if (this.canScrollNext) {
+        this.scrollCarousel(1);
+      } else {
+        // If at the end, scroll back to start
+        this.carouselRef.nativeElement.scrollTo({
+          left: 0,
+          behavior: 'smooth'
+        });
+        this.checkScrollButtons();
+      }
+    }, 5000);
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
     // Make sure to re-enable scrolling if component is destroyed while lightbox is open
     if (this.lightboxOpen) {
       document.body.style.overflow = '';
+    }
+    window.removeEventListener('resize', this.checkScrollButtons.bind(this));
+    if (this.scrollInterval) {
+      clearInterval(this.scrollInterval);
     }
   }
 

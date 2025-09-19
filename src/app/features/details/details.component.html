@@ -103,18 +103,43 @@ class="fixed inset-0 bg-gradient-to-br from-gray-800/70 via-gray-600/60 to-blue-
   <section class="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
       <h2 class="text-3xl font-bold text-gray-800 mb-8">You May Also Like</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-        @for (product of recommendedProducts.slice(0, 6); track product.id) {
-          <app-product-card 
-            [product]="product"
-            [isInWishlist]="isInWishlistCheck(product.id)"
-            [isInCart]="isInCartCheck(product.id)"
-            (toggleWishlist)="onToggleWishlist($event)"
-            (addToCart)="onAddToCart($event)">
-          </app-product-card>
-        }
+      
+      <!-- Custom Carousel Container -->
+      <div class="relative">
+        <div 
+          class="flex overflow-x-auto pb-4 -mx-2 no-scrollbar" 
+          #carousel>
+          @for (product of recommendedProducts; track product.id) {
+            <div class="flex-none px-2 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5">
+              <app-product-card
+                [product]="product"
+                [isInWishlist]="isInWishlistCheck(product.id)"
+                [isInCart]="isInCartCheck(product.id)"
+                (toggleWishlist)="onToggleWishlist($event)"
+                (addToCart)="onAddToCart($event)">
+              </app-product-card>
+            </div>
+          }
+        </div>
+        
+        <!-- Navigation Buttons (moved outside images) -->
+        <button 
+          (click)="scrollCarousel(-1)" 
+          class="absolute -left-18 top-1/2 -translate-y-1/2 w-12 h-12 bg-[#174B78] text-white flex items-center justify-center rounded-lg shadow hover:bg-[#1a5b89] transition z-10"
+          [class.opacity-50]="!canScrollPrev"
+          [class.cursor-not-allowed]="!canScrollPrev"
+          [disabled]="!canScrollPrev">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button 
+          (click)="scrollCarousel(1)" 
+          class="absolute -right-18 top-1/2 -translate-y-1/2 w-12 h-12 bg-[#174B78] text-white flex items-center justify-center rounded-lg shadow hover:bg-[#1a5b89] transition z-10"
+          [class.opacity-50]="!canScrollNext"
+          [class.cursor-not-allowed]="!canScrollNext"
+          [disabled]="!canScrollNext">
+          <i class="fas fa-chevron-right"></i>
+        </button>
       </div>
     </div>
   </section>
   
-</div>
