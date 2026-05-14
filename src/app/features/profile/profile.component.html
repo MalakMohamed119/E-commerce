@@ -1,0 +1,74 @@
+<section class="min-h-screen bg-white flex items-center justify-center py-16 px-8 sm:px-6 lg:px-14">
+    <div class="max-w-md w-full space-y-8">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold text-gray-600 mt-4">My Profile</h1>
+            <p class="text-gray-500 mt-4">Update your personal information</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-8 mt-1">
+            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+                <!-- Name -->
+                <div style="margin-bottom: 1rem;">
+                  <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Full Name</label>
+                  <input formControlName="name" type="text" placeholder="Enter your full name" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" />
+                  @if(name?.invalid && name?.touched) {
+                    <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
+                      @if(name?.errors?.['required']) { <p>This field is required</p> }
+                      @if(name?.errors?.['minlength']) { <p>Name must be at least 2 characters</p> }
+                    </div>
+                  }
+                </div>
+
+                <!-- Email -->
+                <div style="margin-bottom: 1rem;">
+                  <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Email Address</label>
+                  <input formControlName="email" type="email" placeholder="Enter your email" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" />
+                  @if(email?.invalid && email?.touched) {
+                    <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
+                      @if(email?.errors?.['required']) { <p>This field is required</p> }
+                      @if(email?.errors?.['email']) { <p>Please enter a valid email</p> }
+                    </div>
+                  }
+                </div>
+
+                <!-- Phone -->
+                <div style="margin-bottom: 1rem;">
+                  <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Phone Number</label>
+                  <input formControlName="phone" type="tel" placeholder="01xxxxxxxxx" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" />
+                  @if(phone?.invalid && phone?.touched) {
+                    <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
+                      @if(phone?.errors?.['required']) { <p>This field is required</p> }
+                      @if(phone?.errors?.['pattern']) { <p>Please enter a valid Egyptian phone number</p> }
+                    </div>
+                  }
+                </div>
+
+                <button [disabled]="isLoading || profileForm.invalid" type="submit" class="btn w-full py-3">
+                  Update Profile
+                    @if(isLoading){
+                    <span> <i class="fas fa-spinner animate-spin"></i></span>
+                    }
+                </button>
+                
+                @if(message && messageType === 'error'){
+                <p class="text-red-500 text-sm mt-1 text-center">{{message}}</p>
+                }
+                @if(message && messageType === 'success'){
+                    <p class="text-green-800 text-sm mt-1 text-center">{{message}}</p>
+                }
+                
+                <div class="text-center">
+                    <p class="text-gray-600">
+                    
+                        <a routerLink="/home"
+                            class="text-[#1a5b89] hover:text-[#174B78] font-semibold transition-colors duration-300">
+                         Back Home
+                        </a>
+                    </p>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</section>

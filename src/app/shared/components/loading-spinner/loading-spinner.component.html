@@ -1,0 +1,19 @@
+<div 
+  *ngIf="showBackdrop"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]"
+  aria-label="Loading...">
+  <div class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-4"></div>
+    <p class="text-gray-700">{{message}}</p>
+  </div>
+</div>
+
+<!-- For when backdrop is not needed -->
+<div 
+  *ngIf="!showBackdrop"
+  class="fixed inset-0 flex items-center justify-center z-[9999] pointer-events-none">
+  <div class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-4"></div>
+    <p class="text-gray-700">{{message}}</p>
+  </div>
+</div>

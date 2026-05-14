@@ -1,0 +1,145 @@
+<div class="min-h-screen bg-white">
+  <!-- Product Details Section -->
+  <div class="py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="flex flex-col lg:flex-row">
+          <!-- Product Image (Left Side) -->
+          <div class="lg:w-2/5 p-6 flex flex-col items-center bg-gray-50">
+            <!-- Main Product Image -->
+            <div class="w-full max-w-md mb-6 cursor-zoom-in " (click)="openLightbox(productDetails.imageCover)">
+              <img 
+                [src]="productDetails.imageCover" 
+                [alt]="productDetails.title"
+                class="w-full h-auto max-h-96 object-contain mx-auto"
+              />
+            </div>
+
+            <!-- Thumbnail Gallery -->
+            <div *ngIf="productDetails.images?.length" class="w-full max-w-md px-4">
+              <div class="flex justify-center gap-4 overflow-x-auto py-2">
+                <div *ngFor="let img of productDetails.images | slice:0:4" 
+                     class="flex-shrink-0 w-14 h-14 cursor-pointer rounded-full overflow-hidden transition-all duration-200  p-0.5"
+                     [class.border-blue-500]="img === productDetails.imageCover"
+                     [class.border-gray-200]="img !== productDetails.imageCover"
+                     (click)="$event.stopPropagation(); productDetails.imageCover = img">
+                  <img [src]="img" 
+                       [alt]="productDetails.title + ' thumbnail'" 
+                       class="w-full h-full object-cover rounded-full hover:opacity-90 transition-opacity">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- Lightbox -->
+<div *ngIf="lightboxOpen" 
+class="fixed inset-0 bg-gradient-to-br from-gray-800/70 via-gray-600/60 to-blue-600/70 z-50 flex items-center justify-center p-4" 
+(click)="closeLightbox()">
+<div class="relative max-w-4xl w-full" (click)="$event.stopPropagation()">
+<button (click)="closeLightbox()" class="absolute -top-10 right-0 text-white hover:text-gray-300">
+ <i class="fas fa-times text-2xl"></i>
+</button>
+<img [src]="lightboxImage" [alt]="'Enlarged ' + productDetails.title" class="max-h-[80vh] w-auto mx-auto rounded-lg shadow-lg">
+</div>
+</div>
+
+
+          <!-- Product Info (Right Side) -->
+          <div class="lg:max-w-6/12 p-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ productDetails.title }}</h1>
+            
+            <!-- Rating and Category -->
+            <div class="flex items-center mb-6">
+              <div class="flex items-center">
+                <div class="flex items-center bg-yellow-50 px-3 py-1 rounded-full">
+                  <i class="fas fa-star text-yellow-400 mr-1"></i>
+                  <span class="text-gray-700 font-medium">{{ productDetails.ratingsAverage || '0.0' }}</span>
+                </div>
+                <span class="mx-3 text-gray-300">|</span>
+                <span class="text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                  {{ productDetails.category ? productDetails.category.name : 'Uncategorized' }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Price -->
+            <div class="mb-6">
+              <span class="text-4xl font-bold text-blue-900">EGP{{ productDetails.price }}</span>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-8">
+              <h3 class="text-lg font-medium text-gray-900 mb-3">Description</h3>
+              <p class="text-gray-600 leading-relaxed text-justify">
+                {{ productDetails.description || 'No description available.' }}
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center space-x-4 mt-10">
+              <button 
+                (click)="addToCart()"
+                class="flex-1 btn text-white py-4 px-6 rounded-lg font-medium transition duration-300 text-lg"
+              >
+                Add to Cart
+              </button>
+              <button 
+                (click)="toggleWishlist()"
+                class=" flex items-center justify-center p-4 rounded-full border-2 border-gray-200 hover:bg-gray-50 transition duration-200"
+                [class.text-red-500]="isInWishlist"
+                [class.text-gray-400]="!isInWishlist"
+                [class.border-red-200]="isInWishlist"
+                title="Add to wishlist"
+              >
+                <i class="fas fa-heart text-xl"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8">You May Also Like</h2>
+      
+      <!-- Custom Carousel Container -->
+      <div class="relative">
+        <div 
+          class="flex overflow-x-auto pb-4 -mx-2 no-scrollbar" 
+          #carousel>
+          @for (product of recommendedProducts; track product.id) {
+            <div class="flex-none px-2 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5">
+              <app-product-card
+                [product]="product"
+                [isInWishlist]="isInWishlistCheck(product.id)"
+                [isInCart]="isInCartCheck(product.id)"
+                (toggleWishlist)="onToggleWishlist($event)"
+                (addToCart)="onAddToCart($event)">
+              </app-product-card>
+            </div>
+          }
+        </div>
+        
+        <!-- Navigation Buttons (moved outside images) -->
+        <button 
+          (click)="scrollCarousel(-1)" 
+          class="absolute -left-18 top-1/2 -translate-y-1/2 w-12 h-12 bg-[#174B78] text-white flex items-center justify-center rounded-lg shadow hover:bg-[#1a5b89] transition z-10"
+          [class.opacity-50]="!canScrollPrev"
+          [class.cursor-not-allowed]="!canScrollPrev"
+          [disabled]="!canScrollPrev">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button 
+          (click)="scrollCarousel(1)" 
+          class="absolute -right-18 top-1/2 -translate-y-1/2 w-12 h-12 bg-[#174B78] text-white flex items-center justify-center rounded-lg shadow hover:bg-[#1a5b89] transition z-10"
+          [class.opacity-50]="!canScrollNext"
+          [class.cursor-not-allowed]="!canScrollNext"
+          [disabled]="!canScrollNext">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+  

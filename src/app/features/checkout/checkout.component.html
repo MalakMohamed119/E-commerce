@@ -1,0 +1,201 @@
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <button 
+        (click)="goBackToCart()" 
+        class="flex items-center text-gray-600 hover:text-gray-900 mb-4"
+      >
+        <i class="fas fa-arrow-left mr-2"></i>
+        Back to Cart
+      </button>
+      <h1 class="text-3xl font-bold text-gray-900">Checkout</h1>
+      <p class="mt-2 text-sm text-gray-600">Complete your order</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div *ngIf="!loading" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Checkout Form -->
+      <div class="lg:col-span-2">
+        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="space-y-8">
+          <!-- Shipping Address Section -->
+          <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Shipping Address</h2>
+            
+            <div formGroupName="shippingAddress" class="space-y-6">
+              <!-- Address Details -->
+              <div>
+                <label for="details" class="block text-sm font-medium text-gray-700 mb-2">
+                  Address Details *
+                </label>
+                <textarea
+                  id="details"
+                  formControlName="details"
+                  rows="3"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your full address with building number, street, area..."
+                ></textarea>
+                <div *ngIf="getFieldError('shippingAddress.details')" class="mt-1 text-sm text-red-600">
+                  {{ getFieldError('shippingAddress.details') }}
+                </div>
+              </div>
+
+              <!-- Phone Number -->
+              <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  formControlName="phone"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="01XXXXXXXXX"
+                />
+                <div *ngIf="getFieldError('shippingAddress.phone')" class="mt-1 text-sm text-red-600">
+                  {{ getFieldError('shippingAddress.phone') }}
+                </div>
+              </div>
+
+              <!-- City -->
+              <div>
+                <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+                  City *
+                </label>
+                <input
+                  type="text"
+                  id="city"
+                  formControlName="city"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your city"
+                />
+                <div *ngIf="getFieldError('shippingAddress.city')" class="mt-1 text-sm text-red-600">
+                  {{ getFieldError('shippingAddress.city') }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Method Section -->
+          <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Payment Method</h2>
+            
+            <div class="space-y-4">
+              <div *ngFor="let method of paymentMethods" class="relative">
+                <input
+                  type="radio"
+                  [id]="method.value"
+                  [value]="method.value"
+                  formControlName="paymentMethod"
+                  (change)="onPaymentMethodChange(method.value)"
+                  class="sr-only"
+                />
+                <label
+                  [for]="method.value"
+                  class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-200"
+                  [class.border-blue-500]="paymentMethod === method.value"
+                  [class.bg-blue-50]="paymentMethod === method.value"
+                  [class.border-gray-200]="paymentMethod !== method.value"
+                  [class.hover:border-gray-300]="paymentMethod !== method.value"
+                >
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                      <i [class]="method.icon + ' text-xl mr-3'"
+                         [class.text-blue-600]="paymentMethod === method.value"
+                         [class.text-gray-400]="paymentMethod !== method.value"></i>
+                    </div>
+                    <div>
+                      <div class="text-sm font-medium text-gray-900">{{ method.label }}</div>
+                    </div>
+                  </div>
+                  <div class="ml-auto">
+                    <div class="w-4 h-4 border-2 rounded-full"
+                         [class.border-blue-500]="paymentMethod === method.value"
+                         [class.bg-blue-500]="paymentMethod === method.value"
+                         [class.border-gray-300]="paymentMethod !== method.value">
+                      <div *ngIf="paymentMethod === method.value" class="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex justify-end">
+            <button
+              type="submit"
+              [disabled]="submitting || checkoutForm.invalid"
+              class="w-full sm:w-auto px-8 py-3 btn text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            >
+              <span *ngIf="!submitting">
+                <i class="fas fa-credit-card mr-2"></i>
+                {{ paymentMethod === 'card' ? 'Proceed to Payment' : 'Place Order' }}
+              </span>
+              <span *ngIf="submitting" class="flex items-center">
+                <i class="fas fa-spinner fa-spin mr-2"></i>
+                Processing...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-lg shadow-sm p-6 sticky top-8">
+          <h2 class="text-xl font-semibold text-gray-900 mb-6">Order Summary</h2>
+          
+          <!-- Cart Items -->
+          <div class="space-y-4 mb-6">
+            <div *ngFor="let item of cartItems" class="flex items-center space-x-4">
+              <div class="flex-shrink-0">
+                <img
+                  [src]="item.product?.imageCover || '/assets/images/placeholder.jpg'"
+                  [alt]="item.product?.title"
+                  class="w-16 h-16 object-cover rounded-lg"
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-medium text-gray-900 truncate">
+                  {{ item.product?.title }}
+                </h3>
+                <p class="text-sm text-gray-500">Qty: {{ item.count }}</p>
+                <p class="text-sm font-medium text-gray-900">
+                  ${{ (item.totalPrice || 0).toFixed(2) }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Total -->
+          <div class="border-t border-gray-200 pt-4">
+            <div class="flex justify-between items-center text-lg font-semibold text-gray-900">
+              <span>Total</span>
+              <span>${{ totalAmount.toFixed(2) }}</span>
+            </div>
+            <p class="text-sm text-gray-500 mt-2">
+              {{ cartItems.length }} item{{ cartItems.length !== 1 ? 's' : '' }}
+            </p>
+          </div>
+
+          <!-- Security Notice -->
+          <div class="mt-6 p-4 bg-green-50 rounded-lg">
+            <div class="flex items-center">
+              <i class="fas fa-shield-alt text-green-600 mr-2"></i>
+              <span class="text-sm text-green-800 font-medium">Secure Checkout</span>
+            </div>
+            <p class="text-xs text-green-700 mt-1">
+              Your payment information is encrypted and secure.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
