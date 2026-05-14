@@ -1,13 +1,5 @@
 {
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist/e-commerce"
-      }
-    }
-  ],
+  "outputDirectory": "dist/e-commerce",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
