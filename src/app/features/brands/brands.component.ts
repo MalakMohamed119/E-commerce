@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Brand } from '../../core/models/brands.interface';
 import { BrandsService } from '../home/services/brands.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-brands',
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class BrandsComponent {
   private readonly brandsService = inject(BrandsService);
+  private readonly router = inject(Router);
 
   brandsList: Brand[] = [];
   selectedBrand: Brand | null = null;
@@ -43,8 +45,12 @@ export class BrandsComponent {
   }
 
   onBrandClick(brand: Brand): void {
-    this.selectedBrand = brand;
-    this.showModal = true;
+    this.router.navigate(['/products'], {
+      queryParams: {
+        brand: brand._id,
+        name: brand.name
+      }
+    });
   }
 
   closeModal(): void {

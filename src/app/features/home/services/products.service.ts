@@ -99,6 +99,20 @@ export class ProductsService {
     );
   }
 
+  /**
+   * Get products by brand
+   * @param brandId Brand ID
+   * @returns Observable of Product[]
+   */
+  getProductsByBrand(brandId: string): Observable<Product[]> {
+    return this.httpClient.get<{ data: Product[] }>(
+      `${environment.baseUrl}products?brand=${brandId}`
+    ).pipe(
+      map(response => response.data || []),
+      catchError(this.handleError<Product[]>('getProductsByBrand', []))
+    );
+  }
+
   // Cache management methods
   private getFromCache<T>(key: string): T | null {
     const cached = this.cache.get(key);

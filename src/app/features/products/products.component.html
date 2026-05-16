@@ -2,13 +2,13 @@
     <div class="container mx-auto">
       <div class="catalog-header">
         <span>Explore the store</span>
-        <h2>Our Products</h2>
+        <h2>{{ pageTitle }}</h2>
       </div>
       @if (productList.length > 0) {
         <div class="parent catalog-grid">
           @for (product of productList | paginate: { 
             id: 'foo',
-            itemsPerPage: p,
+            itemsPerPage: pageSize,
             currentPage: p,
             totalItems: total 
           }; track product.id) {
@@ -22,12 +22,14 @@
             </app-product-card>
           }
         </div>
+        @if (!isFiltered && total > pageSize) {
         <div class="flex justify-center mt-20 text-2xl mb-0">
           <pagination-controls  
-            id="some_id"
-            (pageChange)="getAllProductsData($event)">
+            id="foo"
+            (pageChange)="PageChanged($event)">
           </pagination-controls>
         </div>
+        }
       } @else {
         <div class="text-center py-12">
           <p class="text-gray-600">No products found.</p>

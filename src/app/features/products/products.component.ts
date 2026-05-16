@@ -5,6 +5,7 @@ import { ProductsService } from '../home/services/products.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { CartService } from '../cart/services/cart.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -17,14 +18,38 @@ export class ProductsComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
   private readonly wishlistService = inject(WishlistService);
   private readonly cartService = inject(CartService);
+  private readonly activatedRoute = inject(ActivatedRoute);
 
   productList: Product[] = [];
   pageSize!: number;
   p!: number;
   total!: number;
+  pageTitle = 'Our Products';
+  isFiltered = false;
 
   ngOnInit(): void {
-    this.getAllProductsData();
+    this.activatedRoute.queryParamMap.subscribe({
+      next: (params) => {
+        const categoryId = params.get('category');
+        const brandId = params.get('brand');
+        const filterName = params.get('name');
+
+        this.pageTitle = filterName || 'Our Products';
+        this.isFiltered = !!categoryId || !!brandId;
+
+        if (categoryId) {
+          this.getProductsByCategory(categoryId);
+          return;
+        }
+
+        if (brandId) {
+          this.getProductsByBrand(brandId);
+          return;
+        }
+
+        this.getAllProductsData();
+      }
+    });
   }
 
   getAllProductsData(page: number = 1): void {
@@ -44,6 +69,28 @@ export class ProductsComponent implements OnInit {
 
   PageChanged(page: number): void {
     this.getAllProductsData(page);
+  }
+
+  getProductsByCategory(categoryId: string): void {
+    this.productsService.getProductsByCategory(categoryId).subscribe({
+      next: (products) => {
+        this.setFilteredProducts(products);
+      },
+      error: (err) => {
+        console.log('Error loading category products:', err);
+      }
+    });
+  }
+
+  getProductsByBrand(brandId: string): void {
+    this.productsService.getProductsByBrand(brandId).subscribe({
+      next: (products) => {
+        this.setFilteredProducts(products);
+      },
+      error: (err) => {
+        console.log('Error loading brand products:', err);
+      }
+    });
   }
 
   onToggleWishlist(productId: string): void {
@@ -116,5 +163,12 @@ export class ProductsComponent implements OnInit {
         document.body.removeChild(toast);
       }, 300);
     }, 3000);
+  }
+
+  private setFilteredProducts(products: Product[]): void {
+    this.productList = products;
+    this.pageSize = products.length || 20;
+    this.p = 1;
+    this.total = products.length;
   }
 }

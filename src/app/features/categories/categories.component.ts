@@ -43,10 +43,11 @@ export class CategoriesComponent {
   }
 
   onCategoryClick(category: Category): void {
-    // Navigate to subcategories page with category ID in URL and name in state
-    this.router.navigate(['/subcategories', category._id], {
-      state: { categoryName: category.name },
-      queryParams: { name: encodeURIComponent(category.name) }
+    this.router.navigate(['/products'], {
+      queryParams: {
+        category: category._id,
+        name: category.name
+      }
     });
   }
 }
