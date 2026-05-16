@@ -1,85 +1,94 @@
 # E-Commerce Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
+> A modern, fully responsive e-commerce web application built with Angular — featuring a clean and contemporary UI enhanced for a better user experience.
 
-## Deployment to Vercel
+🔗 **Live Demo:** [e-commerce-five-kappa-11.vercel.app](https://e-commerce-five-kappa-11.vercel.app/home)
+📁 **Repository:** [github.com/MalakMohamed119/E-commerce](https://github.com/MalakMohamed119/E-commerce)
 
-This application is configured for deployment to Vercel. Follow these steps to deploy:
+---
 
-1. **Install Vercel CLI** (if not already installed):
-   ```bash
-   npm install -g vercel
-   ```
+## 📌 About the Project
 
-2. **Build the application**:
-   ```bash
-   ng build --configuration production
-   ```
+This project started as a standard e-commerce application and was later enhanced with a modern, refreshed UI to deliver a smoother and more contemporary shopping experience. Every detail was revisited to ensure a clean, intuitive, and visually appealing interface.
 
-3. **Deploy to Vercel**:
-   ```bash
-   vercel
-   ```
-   - Follow the prompts to log in or create a Vercel account
-   - Choose the default options when prompted
+---
 
-4. **For subsequent deployments**, you can use:
-   ```bash
-   vercel --prod
-   ```
+## ✨ Features
 
-## Development server
+- 🛍️ **Browse Products** — Explore a full catalog of products with a clean layout
+- 🔍 **Search** — Quickly find products by name or category
+- ❤️ **Wishlist** — Save favourite products for later
+- 🛒 **Shopping Cart** — Add, remove, and manage items before checkout
+- 🔐 **Login / Register** — Secure user authentication
 
-To start a local development server, run:
+---
+
+## 🎨 UI Enhancement
+
+The UI was fully redesigned to be:
+- More **modern** and visually polished
+- Cleaner layout with improved **typography and spacing**
+- Better **color consistency** across all pages
+- Smoother overall **user experience**
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Angular 20 |
+| Language | TypeScript |
+| Styling | CSS / Tailwind CSS |
+| Deployment | Vercel |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js
+- Angular CLI
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/MalakMohamed119/E-commerce.git
+
+# Navigate into the project
+cd E-commerce
+
+# Install dependencies
+npm install
+
+# Run the development server
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open your browser and navigate to `http://localhost:4200/`
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Build for Production
 
 ```bash
-ng generate component component-name
+ng build --configuration production
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
+## 📂 Project Structure
+
+```
+src/
+├── app/
+│   ├── core/          # Auth, guards, interceptors
+│   ├── features/      # Feature modules (home, products, cart, wishlist...)
+│   ├── shared/        # Shared components, pipes, directives
+│   └── app.routes.ts
+├── public/
+└── styles/
 ```
 
-## Building
+---
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+*Built with ❤️ using Angular — Malak Mohamed*
