@@ -1,22 +1,24 @@
-<section class="bg-gray-100 py-12 px-12">
+<section class="brands-page">
     <div class="container mx-auto">
-      <h2 class="text-4xl mb-8 mt-2 text-gray-700">All Brands</h2>
+      <div class="page-heading">
+        <span>Trusted names</span>
+        <h2>All Brands</h2>
+      </div>
       
-      <!-- Brands Grid -->
-      <div class="parent grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+      <div class="parent brands-grid">
         @for (brand of brandsList; track brand._id) {
-          <div class="brand-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+          <div class="brand-card"
                (click)="onBrandClick(brand)">
-            <div class="aspect-square overflow-hidden p-4 flex items-center justify-center bg-gray-50">
+            <div class="brand-image-wrap">
               <img 
                 [src]="brand.image" 
                 [alt]="brand.name"
                 class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300"
                 (error)="onImageError($event)"
-                (load)="onImageLoad($event)">
+              (load)="onImageLoad($event)">
             </div>
-            <div class="p-4">
-              <h3 class="text-lg font-semibold text-gray-800 text-center">{{ brand.name }}</h3>
+            <div class="brand-body">
+              <h3>{{ brand.name }}</h3>
             </div>
           </div>
         }
@@ -27,10 +29,9 @@
 
   <!-- Brand Modal -->
   @if (showModal && selectedBrand) {
-    <div class="fixed inset-0 bg-gradient-to-r from-gray-500/60 to-blue-500/50 flex items-center justify-center z-50"
+    <div class="brand-modal fixed inset-0 flex items-center justify-center z-50"
          (click)="onOverlayClick($event)">
-      <div class="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4 transform transition-all">
-        <!-- Modal Header -->
+      <div class="brand-dialog bg-white rounded-lg shadow-2xl max-w-md w-full mx-4 transform transition-all">
         <div class="flex justify-between items-center p-6 border-b">
           <h3 class="text-2xl font-bold text-gray-800">{{ selectedBrand.name }}</h3>
           <button 
@@ -42,7 +43,6 @@
           </button>
         </div>
         
-        <!-- Modal Body -->
         <div class="p-6">
           <div class="flex items-center justify-center mb-6 bg-transparent rounded-lg p-8">
             <img 
@@ -56,7 +56,6 @@
           </div>
         </div>
         
-        <!-- Modal Footer -->
         <div class="px-6 py-4 bg-gray-50 rounded-b-lg">
           <button 
             (click)="closeModal()"

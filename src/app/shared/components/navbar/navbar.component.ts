@@ -1,5 +1,6 @@
-import { Component, AfterViewInit, Input, inject, OnInit, OnDestroy } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, AfterViewInit, Input, inject, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { NgIf } from '@angular/common';
 import { initFlowbite } from 'flowbite';
 import { AuthService } from '../../../core/auth/auth.service';
 import { WishlistService } from '../../../core/services/wishlist.service';
@@ -9,8 +10,10 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  imports: [RouterLink,],
+  styleUrl: './navbar.component.css',
+  imports: [RouterLink, RouterLinkActive, NgIf],
   standalone: true,
+  encapsulation: ViewEncapsulation.None,
 })
 export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   private readonly authService = inject(AuthService);
@@ -19,6 +22,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   
   wishlistCount: number = 0;
   cartCount: number = 0;
+  isMobileMenuOpen = false;
   private subscription = new Subscription();
 
   // Deprecated: kept for compatibility with template until fully removed
@@ -71,7 +75,16 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
+  }
+
   signOut(): void {
+    this.closeMobileMenu();
     this.authService.logout();
   }
 }

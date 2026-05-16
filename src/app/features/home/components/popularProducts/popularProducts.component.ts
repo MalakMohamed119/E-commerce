@@ -4,12 +4,13 @@ import { Product } from '../../../../core/models/products.interface';
 import { ProductsService } from '../../services/products.service';
 import { WishlistService } from '../../../../core/services/wishlist.service';
 import { CartService } from '../../../cart/services/cart.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-popularProducts',
   templateUrl: './popularProducts.component.html',
   styleUrls: ['./popularProducts.component.css'],
-  imports: [ProductCardComponent],
+  imports: [ProductCardComponent, RouterLink],
   standalone: true
 })
 export class PopularProductsComponent implements OnInit {

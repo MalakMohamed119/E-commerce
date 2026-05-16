@@ -3,39 +3,42 @@
     <a [routerLink]="['/details', product.id, product.slug]" class="block">
       <div class="image-wrapper">
         <img class="product-img" [src]="product.imageCover || (product.images && product.images[0])" [alt]="product.title">
+        <div class="overlay-icons">
+          <button
+            (click)="onHeartClick($event)"
+            class="icon-btn"
+            [class.text-red-500]="isAuthenticated && isInWishlist"
+            [class.text-gray-400]="!isAuthenticated || !isInWishlist"
+            [title]="isAuthenticated ? (isInWishlist ? 'Remove from wishlist' : 'Add to wishlist') : 'Login to use wishlist'">
+            <i [class]="isAuthenticated && isInWishlist ? 'fas fa-heart' : 'far fa-heart'"></i>
+          </button>
+          <button
+            (click)="onCartClick($event)"
+            class="icon-btn"
+            [class.text-[#174B78]]="isAuthenticated && isInCart"
+            [class.text-gray-400]="!isAuthenticated || !isInCart"
+            [title]="isAuthenticated ? (isInCart ? 'Remove from cart' : 'Add to cart') : 'Login to add to cart'">
+            <i class="fas fa-shopping-cart"></i>
+          </button>
+        </div>
+        @if (product.priceAfterDiscount && product.priceAfterDiscount < product.price) {
+          <span class="sale-badge">Sale</span>
+        }
       </div>
-      <h3 class="text-base font-semibold text-gray-800 line-clamp-2 mt-3">{{ product.title }}</h3>
+      <h3 class="product-title line-clamp-2">{{ product.title }}</h3>
       <div class="flex items-center justify-between mt-2">
         <span class="price text-gray-900 text-lg">{{ product.price | currency:'EGP' }}</span>
         @if (product.priceAfterDiscount && product.priceAfterDiscount < product.price) {
-          <span class="text-sm text-green-600">Sale</span>
+          <span class="deal-label">Deal</span>
         }
       </div>
     </a>
     
-    <div class="flex items-center justify-between w-full px-2 mt-2">
-      <span class="flex items-center text-sm text-gray-600">
+    <div class="card-meta">
+      <span class="rating-pill">
         <i class="fas fa-star text-yellow-400 mr-1"></i>
         {{ product.ratingsAverage | number:'1.1-1' }}
       </span>
     </div>
 
-    <div class="actions px-2 pb-2">
-    <button 
-      (click)="onHeartClick($event)"
-      class="icon-btn"
-      [class.text-red-500]="isAuthenticated && isInWishlist"
-      [class.text-gray-400]="!isAuthenticated || !isInWishlist"
-      [title]="isAuthenticated ? (isInWishlist ? 'Remove from wishlist' : 'Add to wishlist') : 'Login to use wishlist'">
-      <i [class]="isAuthenticated && isInWishlist ? 'fas fa-heart' : 'far fa-heart'"></i>
-    </button>
-    <button 
-      (click)="onCartClick($event)" 
-      class="icon-btn"
-      [class.text-[#174B78]]="isAuthenticated && isInCart"
-      [class.text-gray-400]="!isAuthenticated || !isInCart"
-      [title]="isAuthenticated ? (isInCart ? 'Remove from cart' : 'Add to cart') : 'Login to add to cart'">
-      <i class="fas fa-shopping-cart"></i>
-    </button>
-  </div>
 </div>

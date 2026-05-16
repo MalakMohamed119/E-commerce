@@ -1,14 +1,16 @@
-<section class="bg-gray-100 py-12 px-12">
+<section class="categories-page">
     <div class="container mx-auto">
-      <h2 class="text-4xl mb-8 mt-2 text-gray-700">All Categories</h2>
+      <div class="page-heading">
+        <span>Choose a department</span>
+        <h2>All Categories</h2>
+      </div>
       
-      <!-- Categories Grid -->
       <div class="flex justify-center">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl">
+        <div class="categories-grid">
           @for (category of categoriesList; track category._id) {
-            <div class="category-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer w-80"
+            <div class="category-card"
                  (click)="onCategoryClick(category)">
-              <div class="h-64 overflow-hidden flex items-center justify-center bg-gray-50 p-4">
+              <div class="category-image-wrap">
                 <img 
                   [src]="category.image" 
                   [alt]="category.name"
@@ -16,8 +18,8 @@
                   (error)="onImageError($event)"
                   (load)="onImageLoad($event)">
               </div>
-              <div class="p-6">
-                <h3 class="text-xl font-semibold text-gray-800 text-center">{{ category.name }}</h3>
+              <div class="category-body">
+                <h3>{{ category.name }}</h3>
               </div>
             </div>
           }

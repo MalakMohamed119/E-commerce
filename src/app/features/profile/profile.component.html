@@ -1,74 +1,115 @@
-<section class="min-h-screen bg-white flex items-center justify-center py-16 px-8 sm:px-6 lg:px-14">
-    <div class="max-w-md w-full space-y-8">
-        <div class="text-center">
-            <h1 class="text-4xl font-bold text-gray-600 mt-4">My Profile</h1>
-            <p class="text-gray-500 mt-4">Update your personal information</p>
+<section class="profile-page">
+  <div class="profile-shell">
+    <header class="profile-header">
+      <div>
+        <span class="profile-kicker">Account settings</span>
+        <h1>My Profile</h1>
+        <p>Keep your contact details updated for faster checkout and order updates.</p>
+      </div>
+      <a routerLink="/home" class="profile-home-link">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back Home</span>
+      </a>
+    </header>
+
+    <div class="profile-layout">
+      <aside class="profile-summary">
+        <div class="profile-avatar">
+          @if(currentUser?.name || profileForm.get('name')?.value) {
+            {{ (currentUser?.name || profileForm.get('name')?.value).charAt(0) }}
+          } @else {
+            <i class="fas fa-user"></i>
+          }
+        </div>
+        <h2>{{ currentUser?.name || profileForm.get('name')?.value || 'EvoShop Customer' }}</h2>
+        <p>{{ currentUser?.email || profileForm.get('email')?.value || 'Complete your profile details' }}</p>
+
+        <div class="profile-meta">
+          <div>
+            <i class="fas fa-shield-halved"></i>
+            <span>Secure account</span>
+          </div>
+          <div>
+            <i class="fas fa-truck-fast"></i>
+            <span>Checkout ready</span>
+          </div>
+          <div>
+            <i class="fas fa-phone"></i>
+            <span>{{ currentUser?.phone || profileForm.get('phone')?.value || 'Add phone number' }}</span>
+          </div>
+        </div>
+      </aside>
+
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-card">
+        <div class="profile-card-title">
+          <span><i class="fas fa-id-card"></i></span>
+          <div>
+            <h2>Personal Information</h2>
+            <p>These details appear on your orders and delivery contact.</p>
+          </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow-lg p-8 mt-1">
-            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <div class="profile-grid">
+          <div class="profile-field">
+            <label for="profile-name">Full Name</label>
+            <div class="profile-input">
+              <i class="far fa-user"></i>
+              <input id="profile-name" formControlName="name" type="text" placeholder="Enter your full name" />
+            </div>
+            @if(name?.invalid && name?.touched) {
+              <div class="profile-error">
+                @if(name?.errors?.['required']) { <p>This field is required</p> }
+                @if(name?.errors?.['minlength']) { <p>Name must be at least 2 characters</p> }
+              </div>
+            }
+          </div>
 
-                <!-- Name -->
-                <div style="margin-bottom: 1rem;">
-                  <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Full Name</label>
-                  <input formControlName="name" type="text" placeholder="Enter your full name" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" />
-                  @if(name?.invalid && name?.touched) {
-                    <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
-                      @if(name?.errors?.['required']) { <p>This field is required</p> }
-                      @if(name?.errors?.['minlength']) { <p>Name must be at least 2 characters</p> }
-                    </div>
-                  }
-                </div>
-
-                <!-- Email -->
-                <div style="margin-bottom: 1rem;">
-                  <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Email Address</label>
-                  <input formControlName="email" type="email" placeholder="Enter your email" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" />
-                  @if(email?.invalid && email?.touched) {
-                    <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
-                      @if(email?.errors?.['required']) { <p>This field is required</p> }
-                      @if(email?.errors?.['email']) { <p>Please enter a valid email</p> }
-                    </div>
-                  }
-                </div>
-
-                <!-- Phone -->
-                <div style="margin-bottom: 1rem;">
-                  <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Phone Number</label>
-                  <input formControlName="phone" type="tel" placeholder="01xxxxxxxxx" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; outline: none; background: white;" />
-                  @if(phone?.invalid && phone?.touched) {
-                    <div style="color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem;">
-                      @if(phone?.errors?.['required']) { <p>This field is required</p> }
-                      @if(phone?.errors?.['pattern']) { <p>Please enter a valid Egyptian phone number</p> }
-                    </div>
-                  }
-                </div>
-
-                <button [disabled]="isLoading || profileForm.invalid" type="submit" class="btn w-full py-3">
-                  Update Profile
-                    @if(isLoading){
-                    <span> <i class="fas fa-spinner animate-spin"></i></span>
-                    }
-                </button>
-                
-                @if(message && messageType === 'error'){
-                <p class="text-red-500 text-sm mt-1 text-center">{{message}}</p>
-                }
-                @if(message && messageType === 'success'){
-                    <p class="text-green-800 text-sm mt-1 text-center">{{message}}</p>
-                }
-                
-                <div class="text-center">
-                    <p class="text-gray-600">
-                    
-                        <a routerLink="/home"
-                            class="text-[#1a5b89] hover:text-[#174B78] font-semibold transition-colors duration-300">
-                         Back Home
-                        </a>
-                    </p>
-                </div>
-
-            </form>
+          <div class="profile-field">
+            <label for="profile-email">Email Address</label>
+            <div class="profile-input">
+              <i class="far fa-envelope"></i>
+              <input id="profile-email" formControlName="email" type="email" placeholder="Enter your email" />
+            </div>
+            @if(email?.invalid && email?.touched) {
+              <div class="profile-error">
+                @if(email?.errors?.['required']) { <p>This field is required</p> }
+                @if(email?.errors?.['email']) { <p>Please enter a valid email</p> }
+              </div>
+            }
+          </div>
         </div>
+
+        <div class="profile-field">
+          <label for="profile-phone">Phone Number</label>
+          <div class="profile-input">
+            <i class="fas fa-phone"></i>
+            <input id="profile-phone" formControlName="phone" type="tel" placeholder="01xxxxxxxxx" />
+          </div>
+          @if(phone?.invalid && phone?.touched) {
+            <div class="profile-error">
+              @if(phone?.errors?.['required']) { <p>This field is required</p> }
+              @if(phone?.errors?.['pattern']) { <p>Please enter a valid Egyptian phone number</p> }
+            </div>
+          }
+        </div>
+
+        @if(message && messageType === 'error'){
+          <p class="profile-alert profile-alert-error">{{message}}</p>
+        }
+        @if(message && messageType === 'success'){
+          <p class="profile-alert profile-alert-success">{{message}}</p>
+        }
+
+        <button [disabled]="isLoading || profileForm.invalid" type="submit" class="profile-submit">
+          @if(isLoading){
+            <i class="fas fa-spinner animate-spin"></i>
+            <span>Updating...</span>
+          } @else {
+            <i class="fas fa-check"></i>
+            <span>Update Profile</span>
+          }
+        </button>
+      </form>
     </div>
+  </div>
 </section>

@@ -1,0 +1,17 @@
+.home-page {
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f6f9fc 42%, #ffffff 100%);
+}
+
+.home-hero {
+  position: relative;
+}
+
+.home-section {
+  position: relative;
+}
+
+.home-section-categories {
+  margin-top: -1px;
+}

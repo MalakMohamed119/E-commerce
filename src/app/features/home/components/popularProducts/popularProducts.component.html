@@ -1,7 +1,16 @@
-<section class="bg-gray-100 py-12 px-8 mx-0">
-  <div class=" mx-auto">
-    <h2 class="text-5xl mb-8 mt-2  text-gray-700">Popular Products</h2>
-    <div class="parent grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+<section class="popular-products">
+  <div class="products-shell mx-auto">
+    <div class="section-heading">
+      <div>
+        <span>Customer favorites</span>
+        <h2>Popular Products</h2>
+      </div>
+      <a routerLink="/products" class="view-all-link">
+        View all
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+    <div class="parent products-grid">
       @for (product of productList.slice(0,23); track product.id) {
         <app-product-card 
           [product]="product"
