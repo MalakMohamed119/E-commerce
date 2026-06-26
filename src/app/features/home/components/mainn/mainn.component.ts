@@ -377,9 +377,9 @@ export class MainnComponent {
   currentIndex = 0;
   slides = [
     {
-      id: 1,
-      img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2200&h=900&q=85',
-      alt: 'Modern laptop and digital shopping workspace',
+      id: 3,
+      img: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=2200&h=900&q=85',
+      alt: 'Fashion retail store with clothing racks',
       position: 'center center'
     },
     {
@@ -389,9 +389,9 @@ export class MainnComponent {
       position: 'center center'
     },
     {
-      id: 3,
-      img: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=2200&h=900&q=85',
-      alt: 'Fashion retail store with clothing racks',
+      id: 1,
+      img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2200&h=900&q=85',
+      alt: 'Modern laptop and digital shopping workspace',
       position: 'center center'
     },
     {
