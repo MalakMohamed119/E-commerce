@@ -10,7 +10,13 @@ import { RouterLink } from '@angular/router';
     <div class="carousel-container">
       <div class="carousel-slides" [style.transform]="'translateX(' + (-currentIndex * 100) + '%)'">
         <div class="slide" *ngFor="let slide of slides">
-          <img [src]="slide.img" [alt]="'Slide ' + slide.id" class="slide-image">
+          <img
+            [src]="slide.img"
+            [alt]="slide.alt"
+            [style.object-position]="slide.position"
+            loading="eager"
+            decoding="async"
+            class="slide-image">
         </div>
       </div>
 
@@ -85,9 +91,13 @@ import { RouterLink } from '@angular/router';
     .slide {
       min-width: 100%;
       height: 100%;
+      position: relative;
+      overflow: hidden;
     }
     
     .slide-image {
+      position: relative;
+      z-index: 1;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -282,7 +292,7 @@ import { RouterLink } from '@angular/router';
 
     @media (max-width: 768px) {
       .carousel-container {
-        height: 590px;
+        height: 560px;
       }
 
       .hero-shade {
@@ -320,13 +330,36 @@ import { RouterLink } from '@angular/router';
 export class MainnComponent {
   currentIndex = 0;
   slides = [
-    { id: 1, img: '/images/img1.avif' },
-    { id: 2, img: '/images/img2.avif' },
-    { id: 3, img: '/images/img3.avif' },
-    { id: 4, img: '/images/img4.avif' },
-    { id: 5, img: '/images/img5.avif' },
-    { id: 6, img: '/images/img6.avif' },
-    { id: 7, img: '/images/img7.avif' }
+    {
+      id: 1,
+      img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2200&h=900&q=85',
+      alt: 'Modern laptop and digital shopping workspace',
+      position: 'center center'
+    },
+    {
+      id: 2,
+      img: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=2200&h=900&q=85',
+      alt: 'Premium electronics and gadgets on a clean desk',
+      position: 'center center'
+    },
+    {
+      id: 3,
+      img: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=2200&h=900&q=85',
+      alt: 'Fashion retail store with clothing racks',
+      position: 'center center'
+    },
+    {
+      id: 4,
+      img: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=2200&h=900&q=85',
+      alt: 'Modern home interior for home category shopping',
+      position: 'center center'
+    },
+    {
+      id: 5,
+      img: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=2200&h=900&q=85',
+      alt: 'Beauty products and cosmetics for beauty category shopping',
+      position: 'center center'
+    }
   ];
 
   constructor() {

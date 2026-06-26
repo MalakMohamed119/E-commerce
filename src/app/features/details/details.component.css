@@ -1,8 +1,77 @@
 .no-scrollbar::-webkit-scrollbar {
-    display: none; /* Chrome, Safari */
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.recommendations-carousel {
+  position: relative;
+  padding-inline: 4rem;
+}
+
+.recommendations-track {
+  scroll-padding-inline: 0.5rem;
+}
+
+.recommendations-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 0.5rem;
+  background: #174b78;
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+  transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+  z-index: 10;
+}
+
+.recommendations-nav:hover:not(:disabled) {
+  background: #1a5b89;
+  transform: translateY(-50%) scale(1.04);
+}
+
+.recommendations-nav-prev {
+  left: 0;
+}
+
+.recommendations-nav-next {
+  right: 0;
+}
+
+.recommendations-nav:disabled {
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .recommendations-carousel {
+    padding-inline: 0;
+    padding-bottom: 4rem;
   }
-  .no-scrollbar {
-    -ms-overflow-style: none; /* IE و Edge */
-    scrollbar-width: none; /* Firefox */
+
+  .recommendations-nav {
+    top: auto;
+    bottom: 0;
+    transform: none;
   }
-  
+
+  .recommendations-nav:hover:not(:disabled) {
+    transform: scale(1.04);
+  }
+
+  .recommendations-nav-prev {
+    left: calc(50% - 3.5rem);
+  }
+
+  .recommendations-nav-next {
+    right: calc(50% - 3.5rem);
+  }
+}
