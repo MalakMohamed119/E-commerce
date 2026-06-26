@@ -301,7 +301,10 @@ import { RouterLink } from '@angular/router';
       }
 
       .hero-content {
+        left: 16px;
+        right: 16px;
         top: 48%;
+        width: auto;
       }
 
       .hero-content h1 {
@@ -328,7 +331,7 @@ import { RouterLink } from '@angular/router';
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 8px;
         margin-top: 22px;
-        width: 100%;
+        width: min(100%, calc(100vw - 32px));
       }
 
       .hero-metrics div {
@@ -358,8 +361,14 @@ import { RouterLink } from '@angular/router';
         height: 640px;
       }
 
+      .hero-content {
+        left: 14px;
+        right: 14px;
+      }
+
       .hero-metrics {
         grid-template-columns: 1fr;
+        width: min(100%, calc(100vw - 28px));
       }
     }
   `]
