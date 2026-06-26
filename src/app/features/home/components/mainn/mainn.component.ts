@@ -292,7 +292,7 @@ import { RouterLink } from '@angular/router';
 
     @media (max-width: 768px) {
       .carousel-container {
-        height: 560px;
+        height: 610px;
       }
 
       .hero-shade {
@@ -301,15 +301,22 @@ import { RouterLink } from '@angular/router';
       }
 
       .hero-content {
-        top: 52%;
+        top: 48%;
       }
 
       .hero-content h1 {
         max-width: 12ch;
       }
 
+      .hero-copy {
+        margin-top: 16px;
+        line-height: 1.55;
+      }
+
       .hero-actions {
         align-items: stretch;
+        gap: 10px;
+        margin-top: 22px;
       }
 
       .hero-primary,
@@ -318,11 +325,41 @@ import { RouterLink } from '@angular/router';
       }
 
       .hero-metrics {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 22px;
+        width: 100%;
+      }
+
+      .hero-metrics div {
+        min-height: 64px;
+        padding: 10px;
+      }
+
+      .hero-metrics strong {
+        font-size: 1rem;
+      }
+
+      .hero-metrics span {
+        font-size: 0.72rem;
+      }
+
+      .carousel-dots {
+        bottom: 18px;
       }
 
       .carousel-button {
         display: none;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .carousel-container {
+        height: 640px;
+      }
+
+      .hero-metrics {
+        grid-template-columns: 1fr;
       }
     }
   `]
